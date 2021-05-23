@@ -1,0 +1,11 @@
+{
+    "params": {
+        "local_server": "True",
+        "local_uri": "mysql://root:@localhost/tamingminds",
+        "prod_uri": "mysql://root:@localhost/tamingminds",
+        "fb_url": "https://facebook.com/tamingminds",
+        "tw_url": "https://twitter.com/tamingminds",
+        "gh_url": "https://github.com/Ayushi96",
+        "blog_name": "Taming Minds"
+    }
+}

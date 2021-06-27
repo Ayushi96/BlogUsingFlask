@@ -2,6 +2,8 @@ from flask import Flask, jsonify, render_template, request, session
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import json
+from werkzeug.utils import secure_filename
+import os
 from flask_mail import Mail
 from werkzeug.utils import redirect
 
@@ -14,7 +16,7 @@ local_server = params['local_server']
 app = Flask(__name__)
 # for security in sessions you need to set the secret key
 app.secret_key = 'super-secret-key'
-
+app.config['UPLOAD_FOLDER'] = params['upload_location']
 app.config.update(
     MAIL_SERVER = 'smtp.gmail.com',
     MAIL_PORT = '465',
@@ -126,7 +128,15 @@ def edit(sno):
 @app.route('/about')
 def about():
     return render_template('about.html', params=params)
-    
+
+@app.route('/uploader', methods=['POST'])
+def uploader():
+    if request.method == 'POST':
+        f = request.files['file1']
+        f.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(f.filename)))
+        return "Uploaded succesfully!"
+
+
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
     if request.method == 'POST':

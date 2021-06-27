@@ -27,7 +27,10 @@
                 </button></a>
             <hr>
             <h1>Upload a file</h1>
-            We will add file uploader here
+            <form action="/uploader" method="post" enctype="multipart/form-data" >
+                <input type="file" name="file1">
+                <button class="btn btn-primary" type="submit">Submit</button>
+            </form>
             <hr>
             <h1>Edit Posts</h1>
             <table class="table">

@@ -12,6 +12,7 @@
         "no_of_posts": 4,
         "login_image": "login.svg",
         "admin_user": "ayushi",
-        "admin_password": "strong"
+        "admin_password": "strong",
+        "upload_location": "C:\\Users\\Ayushi\\Documents\\flaskBlog\\BlogUsingFlask\\static"
     }
 }

@@ -6,6 +6,12 @@
         "fb_url": "https://facebook.com/tamingminds",
         "tw_url": "https://twitter.com/tamingminds",
         "gh_url": "https://github.com/Ayushi96",
-        "blog_name": "Taming Minds"
+        "blog_name": "Taming Minds",
+        "gmail-user": "reginaadamsfrds@gmail.com",
+        "gmail-password": "myfake123",
+        "no_of_posts": 4,
+        "login_image": "login.svg",
+        "admin_user": "ayushi",
+        "admin_password": "strong"
     }
 }

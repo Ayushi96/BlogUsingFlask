@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<!-- Page Header-->
+<header class="masthead" style="background-image: url(' {{ url_for('static', filename='assets/img/home-bg.jpg') }}')">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="site-heading">
+                    <h1>Admin Panel</h1>
+                    <span class="subheading">Manage your posts and change them.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-7">
+
+            <h1>Basic Actions</h1>
+            <a href="/dashboard"><button class="btn btn-primary">
+                    Dashboard Home
+                </button></a>
+            <a href="/logout"><button class="btn btn-primary">
+                    Logout
+                </button></a>
+            <hr>
+            <h1>Add/Edit Posts here</h1>
+            <form name="sentMessage" id="contactForm" action='/edit/{{post.sno}}' method="post" novalidate>
+                <div class="form-floating">
+                    <input class="form-control" id="title" name="title" type="text" placeholder="Enter your title..." value="{{post.title}}" />
+                    <label for="title">Title</label>
+                </div>
+                <div class="form-floating">
+                    <input class="form-control" id="tagline" type="text" placeholder="edited tagline" name='tagline' value="{{post.tagline}}" />
+                    <label for="tagline">Tagline</label>
+                </div>
+                <div class="form-floating">
+                    <input class="form-control" name="slug" id="slug" type="text" placeholder="Enter new slug" value="{{post.slug}}" />
+                    <label for="slug">Slug</label>
+                </div>
+                <div class="form-floating">
+                    <input class="form-control" id="content" placeholder="Enter your new content here..." 
+                        name='content' value="{{post.content}}"></input>
+                    <label for="content">Content</label>
+                </div>
+                <div class="form-floating">
+                    <input class="form-control" id="img_file" placeholder="Enter new image file here..."
+                        name='img_file' value="{{post.img_file}}"></input>
+                    <label for="img_file">Image File</label>
+                </div>
+                <br />
+                <button class="btn btn-primary text-uppercase" type="submit">Submit</button>
+            </form>
+            <!-- Pager-->
+            <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" href="#!">Older Posts
+                    →</a></div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

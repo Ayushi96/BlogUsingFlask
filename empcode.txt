@@ -1,0 +1,156 @@
+console.log("included js file of employee ")
+
+const flaskapi_url = 'http://127.0.0.1:5000/fetchEmployee/'
+
+async function loadData(url) {
+    const response = await fetch(url)
+    let data = await response.json();
+    return data;
+}
+
+async function fetchEmployee(id){
+    const url_emp = flaskapi_url + id
+    data = await loadData(url_emp)
+    console.log("data from the backend is => ", data);
+    document.getElementById("firstName").value = data.firstName;
+    document.getElementById("lastName").value = data.lastName;
+    document.getElementById("DOB").value = data.dob;
+    document.getElementById("hireDate").value = data.hireDate;
+    document.getElementById("department").value = data.department;
+    document.getElementById("salary").value = data.salary;
+    document.getElementById("manager").value = data.manager;
+    document.getElementById("designation").value = data.designation;
+
+}
+
+function handleSearch(){
+    const empId = document.getElementById('empId').value;
+    console.log("empID = ", typeof(empId));
+    if(empId < 1 || empId > 3 || empId == ''){
+
+        document.getElementById('invalidInput').innerHTML = `
+        <div class="alert alert-danger" role="alert">
+        Invalid Input! Try again.
+        </div>
+        `
+        return;
+    }
+    else{
+        document.getElementById('invalidInput').innerHTML = ``
+    }
+    console.log("emp id ", empId);
+    fetchEmployee(empId);
+
+}
+
+
+
+
+
+
+
+
+
+from flask import Flask, render_template, sessions
+from flask_sqlalchemy import SQLAlchemy
+import json
+
+app = Flask(__name__)
+
+with open('config.json', 'r') as c:
+    params = json.load(c)['params']
+
+local_server = params['local_server']
+
+if (local_server):
+    app.config['SQLALCHEMY_DATABASE_URI'] = params['local_uri']
+else:
+    app.config['SQLALCHEMY_DATABASE_URI'] = params['prod_uri']
+
+# initialization
+db = SQLAlchemy(app)
+
+class Details(db.Model):
+    '''
+        ID, f_name, l_name, dob, hire_date, department, designation,
+         salary, manager
+    '''
+    ID = db.Column(db.Integer, primary_key=True)
+    f_name = db.Column(db.String(50), nullable=False)
+    l_name = db.Column(db.String(50), nullable=False)
+    dob = db.Column(db.String(12), nullable=False)
+    hire_date = db.Column(db.String(12), nullable=False)
+    department = db.Column(db.String(50), nullable=False)
+    designation = db.Column(db.String(50), nullable=False)
+    salary = db.Column(db.Float(10))
+    manager = db.Column(db.String(50), nullable=False)
+
+    def __repr__(self):
+        return f"[{self.ID},{self.f_name}, {self.l_name}, {self.dob}, {self.hire_date}, {self.department}, {self.designation}, {self.salary}, {self.manager}]"
+
+
+@app.route('/')
+def hello_world():
+    return render_template('index.html')
+
+@app.route('/fetchEmployee/<string:empId>')
+def fetchEmp(empId):
+    eid = int(empId)
+
+    employeeDetails = Details.query.get(eid)
+
+    row = { "firstName": str(employeeDetails.f_name),
+    "lastName": str(employeeDetails.l_name),
+    "dob": str(employeeDetails.dob), 
+    "hireDate": str(employeeDetails.hire_date), 
+    "department": str(employeeDetails.department), 
+    "designation": str(employeeDetails.designation), 
+    "salary": str(employeeDetails.salary), 
+    "manager": str(employeeDetails.manager) 
+    }
+    emp_json = json.dumps(row)
+
+    return emp_json
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+
+
+
+{
+    "1": {
+        "firstName": "Ayushi",
+        "lastName": "Vishwakarma",
+        "dob": "12/02/1996",
+        "hireDate": "1/07/2017",
+        "department": "Digital",
+        "designation": "Software Engineer",
+        "salary": "2000",
+        "manager": "Abhinav"
+    },
+    "2": {
+        "firstName": "Tarun",
+        "lastName": "K",
+        "dob": "22/02/1995",
+        "hireDate": "2/07/2017",
+        "department": "MR",
+        "designation": "Software Engineer",
+        "salary": "11000",
+        "manager": "Abhinav"
+    },
+    "3": {
+        "firstName": "John",
+        "lastName": "Cena",
+        "dob": "16/04/1994",
+        "hireDate": "11/07/2015",
+        "department": "X-ray",
+        "designation": "System Engineer",
+        "salary": "500",
+        "manager": "Allison"
+    }    
+}
+
+
+

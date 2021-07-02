@@ -87,9 +87,25 @@ def dashboard():
             session['user'] = username  # basically telling the flask app that this user is logged in 
             posts = Posts.query.all()
             return render_template('dashboard.html', params=params, posts=posts)
-            
-    else:
-        return render_template('login.html', params=params)
+
+    return render_template('login.html', params=params)
+
+@app.route('/logout')
+def logout():
+    if session['user']:
+        session.pop('user')
+        return redirect('/dashboard')
+
+@app.route('/delete/<string:sno>', methods=['GET', 'POST'])
+def delete(sno):
+    if 'user' in session and session['user'] == params['admin_user']:
+        print("hit delete")
+        # if sno.isnumeric():
+        post = Posts.query.get(int(sno))
+        db.session.delete(post)
+        db.session.commit()
+        print("deleted the post")
+    return redirect('/dashboard')
 
 @app.route('/edit/<string:sno>', methods=['GET', 'POST'])
 def edit(sno):
